@@ -23,7 +23,7 @@ class AudioRecording {
     constructor(context: Context?) {
         mRecorder = MediaRecorder()
         mContext = context
-        filePath = mContext?.externalCacheDir.toString()
+        filePath = mContext!!.cacheDir.toString()
     }
 
     constructor() {
