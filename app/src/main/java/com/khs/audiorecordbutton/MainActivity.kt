@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 mChronometer!!.stop()
                 mLayoutChronomter?.visibility = View.GONE
+                audioRecording?.clearCacheData()
             }
 
             override fun onStart() {

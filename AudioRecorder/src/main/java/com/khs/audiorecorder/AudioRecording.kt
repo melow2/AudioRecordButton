@@ -3,7 +3,6 @@ package com.khs.audiorecorder
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
-import android.os.Environment
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -25,7 +24,7 @@ class AudioRecording {
     constructor(context: Context?) {
         mRecorder = MediaRecorder()
         mContext = context
-        filePath = mContext!!.cacheDir.toString()+File.separator+SimpleDateFormat("yyyyMMdd").format(Date())
+        filePath = mContext?.externalCacheDir.toString()
     }
 
     constructor() {
@@ -43,7 +42,7 @@ class AudioRecording {
             mRecorder.reset()
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mRecorder.setOutputFile(filePath+mFileName)
+            mRecorder.setOutputFile(filePath+ mFileName)
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             mRecorder.prepare()
             mRecorder.start()
@@ -63,7 +62,7 @@ class AudioRecording {
         mRecorder.release()
         mElapsedMillis = System.currentTimeMillis() - mStartingTimeMillis
         val recordingItem = RecordingItem()
-        recordingItem.filePath = this.filePath
+        recordingItem.filePath = filePath + mFileName
         recordingItem.name = mFileName
         recordingItem.length = mElapsedMillis.toInt()
         recordingItem.time = System.currentTimeMillis()
@@ -72,12 +71,25 @@ class AudioRecording {
         }
     }
 
-    private fun deleteOutput() {
-        val file = File(mContext!!.cacheDir.toString() + mFileName)
+    fun deleteOutput() {
+        val file = File(filePath + mFileName)
         if (file.exists()) {
             file.delete()
         }
     }
+
+    fun clearCacheData() {
+        val cache = mContext?.externalCacheDir
+        if (cache != null) {
+            if (cache.isDirectory) {
+                val children: Array<String> = cache.list()
+                for (i in children.indices) {
+                    File(cache, children[i]).delete()
+                }
+            }
+        }
+    }
+
 
     fun play(recordingItem: RecordingItem) {
         try {
