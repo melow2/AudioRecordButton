@@ -1,0 +1,3 @@
+include ':AudioRecorder'
+include ':app'
+rootProject.name = "AudioRecordButton"
