@@ -6,6 +6,8 @@ import android.media.MediaRecorder
 import android.os.Environment
 import java.io.File
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * @author netodevel
@@ -23,7 +25,7 @@ class AudioRecording {
     constructor(context: Context?) {
         mRecorder = MediaRecorder()
         mContext = context
-        filePath = mContext!!.cacheDir.toString()
+        filePath = mContext!!.cacheDir.toString()+File.separator+SimpleDateFormat("yyyyMMdd").format(Date())
     }
 
     constructor() {
