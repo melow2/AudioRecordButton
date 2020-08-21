@@ -1,14 +1,11 @@
 package com.khs.audiorecordbutton
 
 import android.Manifest.permission
-import android.animation.LayoutTransition
 import android.annotation.TargetApi
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.text.method.MovementMethod
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.widget.Chronometer
 import android.widget.LinearLayout
@@ -20,7 +17,6 @@ import com.khs.audiorecorder.AudioListener
 import com.khs.audiorecorder.AudioRecordButton
 import com.khs.audiorecorder.AudioRecording
 import com.khs.audiorecorder.RecordingItem
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 

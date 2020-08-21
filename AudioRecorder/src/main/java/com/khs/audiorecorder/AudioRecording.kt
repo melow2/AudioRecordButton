@@ -3,6 +3,7 @@ package com.khs.audiorecorder
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.os.Environment
 import java.io.File
 import java.io.IOException
 
@@ -17,10 +18,12 @@ class AudioRecording {
     private var mRecorder: MediaRecorder
     private var mStartingTimeMillis: Long = 0
     private var mElapsedMillis: Long = 0
+    private lateinit var filePath:String
 
     constructor(context: Context?) {
         mRecorder = MediaRecorder()
         mContext = context
+        filePath = mContext?.externalCacheDir.toString()
     }
 
     constructor() {
@@ -38,7 +41,7 @@ class AudioRecording {
             mRecorder.reset()
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mRecorder.setOutputFile(mContext!!.cacheDir.toString() + mFileName)
+            mRecorder.setOutputFile(filePath+mFileName)
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             mRecorder.prepare()
             mRecorder.start()
@@ -58,7 +61,7 @@ class AudioRecording {
         mRecorder.release()
         mElapsedMillis = System.currentTimeMillis() - mStartingTimeMillis
         val recordingItem = RecordingItem()
-        recordingItem.filePath = mContext!!.cacheDir.toString() + mFileName
+        recordingItem.filePath = this.filePath
         recordingItem.name = mFileName
         recordingItem.length = mElapsedMillis.toInt()
         recordingItem.time = System.currentTimeMillis()
