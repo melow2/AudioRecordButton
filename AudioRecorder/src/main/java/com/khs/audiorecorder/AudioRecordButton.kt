@@ -87,30 +87,13 @@ class AudioRecordButton : RelativeLayout {
                     initialX = mImageView!!.x
                 }
                 mLayoutTimer!!.visibility = View.VISIBLE
-                mImageButton!!.visibility = View.VISIBLE
                 startRecord()
                 return true
-            }
-            MotionEvent.ACTION_MOVE -> if (isPlaying && !isPausing) {
-                mImageView!!.x = event.x - mImageView!!.width / 2
-                if (mImageView!!.x < DEFAULT_REMOVE_ICON_SIZE - 20) {
-                    mImageView!!.x = 0f
-                    changeSizeToRemove()
-                } else if (mImageView!!.x > DEFAULT_REMOVE_ICON_SIZE + DEFAULT_REMOVE_ICON_SIZE / 2) {
-                    unRevealSizeToRemove()
-                }
-                if (mImageView!!.x <= 0) {
-                    mImageButton!!.x = 0f
-                }
-                if (mImageView!!.x > initialX) {
-                    mImageView!!.x = initialX
-                }
             }
             MotionEvent.ACTION_UP -> if (isPlaying && !isPausing) {
                 isPausing = true
                 moveImageToBack()
                 mLayoutTimer!!.visibility = View.INVISIBLE
-                mImageButton!!.visibility = View.INVISIBLE
                 if (mImageView!!.x < DEFAULT_REMOVE_ICON_SIZE - 10) {
                     stopRecord(true)
                 } else {

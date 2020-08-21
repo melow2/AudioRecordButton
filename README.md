@@ -26,7 +26,7 @@ allprojects {
 }
 
 dependencies {
-   
+   implementation 'com.github.melow2:AudioRecordButton:Tag'
 }
 
 ```
