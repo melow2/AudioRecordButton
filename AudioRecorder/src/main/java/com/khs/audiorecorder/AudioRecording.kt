@@ -62,10 +62,8 @@ class AudioRecording {
         recordingItem.name = mFileName
         recordingItem.length = mElapsedMillis.toInt()
         recordingItem.time = System.currentTimeMillis()
-        if (cancel == false) {
+        if (!cancel) {
             audioListener!!.onStop(recordingItem)
-        } else {
-            audioListener!!.onCancel()
         }
     }
 
