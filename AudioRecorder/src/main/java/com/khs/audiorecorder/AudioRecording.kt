@@ -3,13 +3,8 @@ package com.khs.audiorecorder
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * @author netodevel
@@ -19,10 +14,10 @@ class AudioRecording {
     private var mContext: Context? = null
     private var mMediaPlayer: MediaPlayer? = null
     private var audioListener: AudioListener? = null
-    private var mRecorder: MediaRecorder?=null
+    private var mRecorder: MediaRecorder? = null
     private var mStartingTimeMillis: Long = 0
     private var mElapsedMillis: Long = 0
-    private lateinit var filePath:String
+    private lateinit var filePath: String
 
     constructor(context: Context?) {
         mContext = context
@@ -41,7 +36,7 @@ class AudioRecording {
             mRecorder?.reset()
             mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
             mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mRecorder?.setOutputFile(filePath+ mFileName)
+            mRecorder?.setOutputFile(filePath + mFileName)
             mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
             mRecorder?.prepare()
             mRecorder?.start()
@@ -54,11 +49,12 @@ class AudioRecording {
 
     fun stop(cancel: Boolean) {
         try {
-        /*    mRecorder?.apply {
-                stop()
-                release()
-            }*/
-            mRecorder = null
+           try{
+               mRecorder?.release()
+               mRecorder = null
+           }catch (e:Exception){
+               e.printStackTrace()
+           }
         } catch (e: Exception) {
             deleteOutput()
         }
@@ -71,6 +67,7 @@ class AudioRecording {
         if (!cancel) {
             audioListener!!.onStop(recordingItem)
         }
+
     }
 
     fun deleteOutput() {

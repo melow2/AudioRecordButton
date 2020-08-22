@@ -67,9 +67,6 @@ class MainActivity : AppCompatActivity() {
         mAudioRecordButton?.setOnAudioListener(object : AudioListener {
             override fun onStop(recordingItem: RecordingItem?) {
                 Toast.makeText(baseContext, "Audio..", Toast.LENGTH_SHORT).show()
-                if (recordingItem != null) {
-                    audioRecording?.play(recordingItem)
-                }
                 mChronometer!!.stop()
                 mLayoutChronomter?.visibility = View.GONE
                 audioRecording?.clearCacheData()
