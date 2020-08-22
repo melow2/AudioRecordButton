@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.IOException
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -53,12 +54,12 @@ class AudioRecording {
 
     fun stop(cancel: Boolean) {
         try {
-          if(mRecorder!=null){
-              mRecorder?.release()
-              mRecorder = null
-          }
-        } catch (e: RuntimeException) {
-            e.printStackTrace()
+        /*    mRecorder?.apply {
+                stop()
+                release()
+            }*/
+            mRecorder = null
+        } catch (e: Exception) {
             deleteOutput()
         }
         mElapsedMillis = System.currentTimeMillis() - mStartingTimeMillis
