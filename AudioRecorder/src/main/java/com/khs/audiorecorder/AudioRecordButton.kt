@@ -104,7 +104,6 @@ class AudioRecordButton : LinearLayout {
         mAudioListener = audioListener
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     fun setupLayout(
         context: Context,
         attrs: AttributeSet?,

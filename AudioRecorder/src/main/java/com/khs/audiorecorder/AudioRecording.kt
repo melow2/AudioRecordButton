@@ -3,6 +3,8 @@ package com.khs.audiorecorder
 import android.content.Context
 import android.media.MediaPlayer
 import android.media.MediaRecorder
+import android.os.Build
+import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -16,19 +18,14 @@ class AudioRecording {
     private var mContext: Context? = null
     private var mMediaPlayer: MediaPlayer? = null
     private var audioListener: AudioListener? = null
-    private var mRecorder: MediaRecorder
+    private var mRecorder: MediaRecorder?=null
     private var mStartingTimeMillis: Long = 0
     private var mElapsedMillis: Long = 0
     private lateinit var filePath:String
 
     constructor(context: Context?) {
-        mRecorder = MediaRecorder()
         mContext = context
         filePath = mContext?.externalCacheDir.toString()
-    }
-
-    constructor() {
-        mRecorder = MediaRecorder()
     }
 
     fun setNameFile(nameFile: String?): AudioRecording {
@@ -37,15 +34,16 @@ class AudioRecording {
     }
 
     fun start(audioListener: AudioListener?): AudioRecording {
+        mRecorder = MediaRecorder()
         this.audioListener = audioListener
         try {
-            mRecorder.reset()
-            mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mRecorder.setOutputFile(filePath+ mFileName)
-            mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            mRecorder.prepare()
-            mRecorder.start()
+            mRecorder?.reset()
+            mRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+            mRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            mRecorder?.setOutputFile(filePath+ mFileName)
+            mRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            mRecorder?.prepare()
+            mRecorder?.start()
             mStartingTimeMillis = System.currentTimeMillis()
         } catch (e: IOException) {
             this.audioListener!!.onError(e)
@@ -55,11 +53,14 @@ class AudioRecording {
 
     fun stop(cancel: Boolean) {
         try {
-            mRecorder.stop()
+          if(mRecorder!=null){
+              mRecorder?.release()
+              mRecorder = null
+          }
         } catch (e: RuntimeException) {
+            e.printStackTrace()
             deleteOutput()
         }
-        mRecorder.release()
         mElapsedMillis = System.currentTimeMillis() - mStartingTimeMillis
         val recordingItem = RecordingItem()
         recordingItem.filePath = filePath + mFileName
