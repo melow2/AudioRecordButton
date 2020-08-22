@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import java.io.File
 import java.io.IOException
+import java.util.logging.Handler
 
 /**
  * @author netodevel
@@ -14,7 +15,7 @@ class AudioRecording {
     private var mContext: Context? = null
     private var mMediaPlayer: MediaPlayer? = null
     private var audioListener: AudioListener? = null
-    private var mRecorder: MediaRecorder? = null
+    private var mRecorder: MediaRecorder? = MediaRecorder()
     private var mStartingTimeMillis: Long = 0
     private var mElapsedMillis: Long = 0
     private lateinit var filePath: String
@@ -30,7 +31,6 @@ class AudioRecording {
     }
 
     fun start(audioListener: AudioListener?): AudioRecording {
-        mRecorder = MediaRecorder()
         this.audioListener = audioListener
         try {
             mRecorder?.reset()
@@ -49,12 +49,15 @@ class AudioRecording {
 
     fun stop(cancel: Boolean) {
         try {
-           try{
-               mRecorder?.release()
-               mRecorder = null
-           }catch (e:Exception){
-               e.printStackTrace()
-           }
+            try {
+                mRecorder?.apply {
+                    stop()
+                    release()
+                }
+                mRecorder = null
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         } catch (e: Exception) {
             deleteOutput()
         }
