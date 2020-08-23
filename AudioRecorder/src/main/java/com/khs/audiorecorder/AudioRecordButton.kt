@@ -96,7 +96,7 @@ class AudioRecordButton : LinearLayout {
                 unRevealImageView()
                 isPlaying = false
                 isPausing = false
-            }, 50)
+            }, 700)
         }
     }
 
